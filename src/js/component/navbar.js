@@ -11,7 +11,7 @@ export const Navbar = () => {
 		<nav className="navbar navbar-light bg-light">
 			<div className="container">
 				<div>
-					<Link to="/">
+					<Link to="/home">
 						<a className="navbar-brand container" href="#">
 							<img
 								src="https://toppng.com/uploads/preview/star-wars-logo-png-985-free-transparent-png-logos-ahold-star-wars-jedi-gels-fruit-flavored-snacks-6-11562891058yyocheksib.png"
@@ -28,8 +28,11 @@ export const Navbar = () => {
 							store.favlist.map((item, index) => {
 								return (
 									<Dropdown.Item key={index} href="">
-										<a id="button_link">{item}</a>
-										<i className="fas fa-trash-alt" onClick={() => actions.deleteFunction(index)} />
+										<a id="button_link">{item.name}</a>
+										<i
+											className="fas fa-trash-alt"
+											onClick={() => actions.deleteFunction(item.id)}
+										/>
 									</Dropdown.Item>
 								);
 							})

@@ -8,7 +8,11 @@ export function MyCard(props) {
 
 	return (
 		<div className="card mx-2" style={{ maxWidth: "300px", minWidth: "250px", display: "inline-block" }}>
-			<img src="http://placehold.it/500x325.jpg" className="card-img-top" alt="" />
+			<img
+				src="https://www.cnet.com/a/img/T-zwa1cycBfOdn29bmDUY3eeRA4=/940x0/2013/05/15/58eb475d-871e-11e3-9955-14feb5ca9861/star-wars-logo_1.jpg"
+				className="card-img-top"
+				alt=""
+			/>
 			<div className="card-body">
 				<h4 className="card-title">{props.name}</h4>
 				<p className="card-text">Gender: {props.gender}</p>
@@ -20,7 +24,7 @@ export function MyCard(props) {
 							Learn more!
 						</a>
 					</Link>
-					<a href="#" className="btn btn-outline-warning" onClick={() => actions.favFunction(props.name)}>
+					<a href="#" className="btn btn-outline-warning" onClick={() => actions.createFavorite(props.name)}>
 						<i className="far fa-heart" />
 					</a>
 				</div>
@@ -42,7 +46,11 @@ export function MyCardPlanets(props) {
 
 	return (
 		<div className="card mx-2" style={{ maxWidth: "300px", minWidth: "250px", display: "inline-block" }}>
-			<img src="http://placehold.it/500x325.jpg" className="card-img-top" alt="" />
+			<img
+				src="https://www.cnet.com/a/img/T-zwa1cycBfOdn29bmDUY3eeRA4=/940x0/2013/05/15/58eb475d-871e-11e3-9955-14feb5ca9861/star-wars-logo_1.jpg"
+				className="card-img-top"
+				alt=""
+			/>
 			<div className="card-body">
 				<h4 className="card-title">{props.planet}</h4>
 				<p className="card-text">Population: {props.population} </p>
@@ -53,7 +61,10 @@ export function MyCardPlanets(props) {
 							Learn more!
 						</a>
 					</Link>
-					<a href="#" className="btn btn-outline-warning" onClick={() => actions.favFunction(props.planet)}>
+					<a
+						href="#"
+						className="btn btn-outline-warning"
+						onClick={() => actions.createFavorite(props.planet)}>
 						<i className="far fa-heart" />
 					</a>
 				</div>

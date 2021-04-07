@@ -3,81 +3,115 @@ const getState = ({ getStore, getActions, setStore }) => {
 		store: {
 			personajes: [],
 			planetas: [],
-			favlist: []
+			favlist: [],
+			token: ""
 		},
 
 		actions: {
 			fetchcharacter() {
-				fetch("https://www.swapi.tech/api/people/")
+				fetch("https://3000-turquoise-bovid-iq8u004o.ws-us03.gitpod.io/characters")
 					.then(response => response.json())
 					.then(result => {
 						let list = [];
-						result.results.forEach(element => {
-							fetch(element.url)
-								.then(response => response.json())
-								.then(result2 => list.push(result2.result.properties))
-								.catch(error => console.log("error", error));
-						});
-
+						list = result;
 						setStore({ personajes: list });
 					})
 					.catch(error => console.log("error", error));
 			},
 
 			fetchplanets() {
-				fetch("https://www.swapi.tech/api/planets/")
+				fetch("https://3000-turquoise-bovid-iq8u004o.ws-us03.gitpod.io/planets")
 					.then(response => response.json())
 					.then(result => {
 						let list = [];
-						result.results.forEach(element => {
-							fetch(element.url)
-								.then(response => response.json())
-								.then(result3 => list.push(result3.result.properties))
-								.catch(error => console.log("error", error));
-						});
-
+						list = result;
 						setStore({ planetas: list });
 					})
 					.catch(error => console.log("error", error));
 			},
 
-			favFunction: name => {
+			createFavorite: name => {
 				const store = getStore();
-				const validate = store.favlist.includes(name);
+				const validate = store.favlist.some(favorites => favorites.name === name);
 				if (validate === false) {
-					const favlist = [...store.favlist, name];
-					setStore({ favlist: favlist });
+					fetch("https://3000-turquoise-bovid-iq8u004o.ws-us03.gitpod.io/favorites", {
+						method: "POST",
+						headers: { "Content-Type": "application/json", Authorization: `Bearer ${getStore().token}` },
+						body: JSON.stringify({
+							name: `${name}`
+						})
+					})
+						.then(response => response.json())
+						.then(result => {
+							setStore({ favlist: result });
+						})
+						.catch(error => console.log("error", error));
 				}
 			},
 
-			deleteFunction: indexItem => {
-				const store = getStore();
-				setStore({ favlist: store.favlist.filter((favlist, index) => index !== indexItem) });
+			deleteFunction: id => {
+				fetch("https://3000-turquoise-bovid-iq8u004o.ws-us03.gitpod.io/favorites", {
+					method: "DELETE",
+					headers: { "Content-Type": "application/json", Authorization: `Bearer ${getStore().token}` },
+					body: JSON.stringify({
+						id: id
+					})
+				})
+					.then(response => response.json())
+					.then(result => {
+						setStore({ favlist: result });
+					})
+					.catch(error => console.log("error", error));
 			},
 
-			// Use getActions to call a function within a fuction
-			exampleFunction: () => {
-				getActions().changeColor(0, "green");
+			create_user: (email, password) => {
+				fetch("https://3000-turquoise-bovid-iq8u004o.ws-us03.gitpod.io/user", {
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({
+						email: `${email}`,
+						password: `${password}`
+					})
+				})
+					.then(response => response.json())
+					.then(result => console.log(result))
+					.catch(error => console.log("error", error));
 			},
-			loadSomeData: () => {
-				/**
-					fetch().then().then(data => setStore({ "foo": data.bar }))
-				*/
-			},
-			changeColor: (index, color) => {
-				//get the store
-				const store = getStore();
 
-				//we have to loop the entire demo array to look for the respective index
-				//and change its color
-				const demo = store.demo.map((elm, i) => {
-					if (i === index) elm.background = color;
-					return elm;
-				});
-
-				//reset the global store
-				setStore({ demo: demo });
+			login_user: (email, password) => {
+				fetch("https://3000-turquoise-bovid-iq8u004o.ws-us03.gitpod.io/token", {
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({
+						email: `${email}`,
+						password: `${password}`
+					})
+				})
+					.then(response => response.json())
+					.then(result => {
+						setStore({ favlist: result.favorites });
+						setStore({ token: result.token });
+					})
+					.catch(error => console.log("error", error));
 			}
+
+			// get_favorites: () => {
+			// 	fetch("https://3000-turquoise-bovid-iq8u004o.ws-us03.gitpod.io/favorites", {
+			// 		method: "GET",
+			// 		headers: { "Content-Type": "application/json", Authorization: `Bearer ${getStore().token}` }
+			// 	})
+			// 		.then(response => response.json())
+			// 		.then(result => {
+			// 			let favlist = [];
+			// 			result.map((item, index) => {
+			// 				favlist.push(item.name);
+			// 			});
+			// 			setStore({ favlist: favlist });
+			// 			console.log(result);
+			// 			console.log(favlist);
+			// 		})
+			// 		.catch(error => console.log("error", error));
+			// }
 		}
 	};
 };
